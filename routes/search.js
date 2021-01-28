@@ -1,16 +1,17 @@
 var express = require('express');
 var router = express.Router();
 const cubes = require('../config/database.json');
+const Cube = require('../models/cube');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
     console.log('search get');
     let searchQuery = req.query;
-    // console.log('search text:', searchQuery.search);
-    // console.log('from', searchQuery.from, 'to', searchQuery.to);
+     console.log('search text:', searchQuery.search);
+     console.log('from', searchQuery.from, 'to', searchQuery.to);
     let min = searchQuery.from;
     let max = searchQuery.to;
-    let text = searchQuery.search.toLowerCase();
+    let text = searchQuery.search;       //.toLowerCase();
 
     if (text == '' && min == '' && max == '') {
             res.redirect('/');
@@ -32,13 +33,21 @@ router.get('/', function(req, res, next) {
             max = 6;
         }
         
+        
+        Cube.find({'name': text}) //, difficulty: {$gt: min, $lt: max}
+        .then((cubes) => {
+            console.log(cubes);
+            res.render('search', { title: 'Search Cubes', cube: cubes });
+        })
+        .catch((err) => console.log(err));
+
         //render based off the three search parameters: string (blank or someText), min difficulty, max difficulty
 
-        let filteredCubes = cubes.filter(cube => (cube.name.toLowerCase().includes(text) || cube.description.toLowerCase().includes(text) || cube.id.toLowerCase().includes(text)) && (cube.difficulty >= min && cube.difficulty <= max));
+        // let filteredCubes = cubes.filter(cube => (cube.name.toLowerCase().includes(text) || cube.description.toLowerCase().includes(text) || cube.id.toLowerCase().includes(text)) && (cube.difficulty >= min && cube.difficulty <= max));
         
-        let empty = filteredCubes.length > 0 ? false: true;
+        // let empty = filteredCubes.length > 0 ? false: true;
 
-        res.render('search', {title: "Search Cubes", cubes: filteredCubes, empty: empty});
+        // res.render('search', {title: "Search Cubes", cubes: filteredCubes, empty: empty});
     }
 });
 
