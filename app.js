@@ -11,11 +11,19 @@ var aboutRouter = require('./routes/about');
 var createRouter = require('./routes/create');
 var detailsRouter = require('./routes/details');
 var searchRouter = require('./routes/search');
+var createAccessoryRouter = require('./routes/createAccessory');
+var attachAccessoryRouter = require('./routes/attachAccessory');
 
 var app = express();
 
-const dbUri = "mongodb+srv://dbtest:dbtestpass@cluster0.abs62.mongodb.net/cubesdb?retryWrites=true&w=majority";
-mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true });
+// hide your mongo connection variables
+require('dotenv').config();
+mongoose.connect(process.env.DB_URI,  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+    .then( (res) => console.log('db connected'))
+    .catch((err) => console.log(err));
 
 
 // view engine setup
@@ -34,6 +42,8 @@ app.use('/about', aboutRouter);
 app.use('/details', detailsRouter);
 app.use('/create', createRouter);
 app.use('/search', searchRouter);
+app.use('/accessory/create', createAccessoryRouter);
+app.use('/accessory/attach', attachAccessoryRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
