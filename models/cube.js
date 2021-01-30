@@ -4,6 +4,7 @@ const Accessory = require('./accessory');
 
 const cubeSchema = new Schema({
     //_id: mongoose.Schema.Types.ObjectId,
+    //creatorId: String,        //new to save which user created it
     name: String,
     description: String,
     imageUrl: String,

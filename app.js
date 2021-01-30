@@ -1,24 +1,35 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var hbs = require('hbs');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const hbs = require('hbs');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const jwt = require('jsonwebtoken');
 
-var indexRouter = require('./routes/index');
-var aboutRouter = require('./routes/about');
-var createRouter = require('./routes/create');
-var detailsRouter = require('./routes/details');
-var searchRouter = require('./routes/search');
-var createAccessoryRouter = require('./routes/createAccessory');
-var attachAccessoryRouter = require('./routes/attachAccessory');
+const indexRouter = require('./routes/index');
+const searchRouter = require('./routes/search');
+const aboutRouter = require('./routes/about');
+const createRouter = require('./routes/create');
+const detailsRouter = require('./routes/details');
+const createAccessoryRouter = require('./routes/createAccessory');
+const attachAccessoryRouter = require('./routes/attachAccessory');
 
-var app = express();
+const editRouter = require('./routes/edit');
+const deleteRouter = require('./routes/delete');
+const loginRouter = require('./routes/login');
+const registerRouter = require('./routes/register');
 
-// hide your mongo connection variables
+const app = express();
+
+// hide your mongo connection constiables
 require('dotenv').config();
 mongoose.connect(process.env.DB_URI,  {
+    dbName: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    pass: process.env.DB_PASS,
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -38,12 +49,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/search', searchRouter);
 app.use('/about', aboutRouter);
 app.use('/details', detailsRouter);
 app.use('/create', createRouter);
-app.use('/search', searchRouter);
 app.use('/accessory/create', createAccessoryRouter);
 app.use('/accessory/attach', attachAccessoryRouter);
+
+app.use('/edit', editRouter);
+app.use('/delete', deleteRouter);
+app.use('/login', loginRouter);
+app.use('/register', registerRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
