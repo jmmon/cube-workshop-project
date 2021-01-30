@@ -4,11 +4,13 @@
 <p><span>Description:</span> {{cube.details}}</p>
 <p><span>Difficulty level:</span> {{cube.difficulty}}</p>
 <a class="btn" href="/">Back</a>
+<a class="btn" href="/accessory/attach/{{cube._id}}">Attach Accessory</a>
 </div>
 
 <!--dummy data -->
 <h2>Accessories</h2>
 <div class="accessories">
+    
     {{#each cube.accessories}}
         <div class="accessory">
             <img src={{this.imageUrl}} alt={{this.name}}>
@@ -17,7 +19,6 @@
         </div>
     {{else}}
         <h3 class="italic">This cube has no accessories yet...</h3>
-        <a class="btn" href="/accessory/attach/{{cube._id}}">Attach Accessory</a>
     {{/each}}
 </div>
 

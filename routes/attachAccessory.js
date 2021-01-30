@@ -16,23 +16,16 @@ router.get('/:uid', function(req, res, next) {
         console.log(thisCube);
         //get all accessories which are not attached to thisCube already
 
-        let idArr = [];
-        thisCube.accessories.forEach((attached) => idArr.push(attached._id));
-        console.log('This cube has these accessories attached:', idArr);
+        let idArr = thisCube.accessories.map(a => {return a._id;});
+        
+        console.log('idArr', idArr);
 
         Accessory.find()
         .then((foundAccessories) => {
+            let dropdownAccessories = foundAccessories.filter(acc => !idArr.includes(acc._id));
 
-            let dropdownAccessories = [];
             console.log('all accessories', foundAccessories);
 
-            foundAccessories.forEach((acc) => {
-                console.log(acc);
-                if (!idArr.includes(acc._id)) {
-                    //if cube's accessories does not include this accessory id, we need to ad dthis accessory as a select option
-                    dropdownAccessories.push(acc);
-                }
-            });
             console.log('accessories to add to dropdown', dropdownAccessories);
             res.render('attachAccessory', { title: 'Attach Accessory Page', cube: thisCube, dropdownAccessories: dropdownAccessories});
             
@@ -52,31 +45,19 @@ router.post('/:uid', function(req, res, next) {
 
     Cube.findOne({_id: cubeId})
     .then((thisCube) => {
-        let acc;
-        Accessory.findOne({_id: selAccId})
-        .then((thisAcc) => {
-            acc = thisAcc;
-        })
-        console.log('this acc should attach to cube', acc);
-        // .then((thisAcc) => {
-        //     acc = thisAcc
-        // })
-        //thisCube.push(acc);
+        thisCube.accessories.push(selAccId);
+        thisCube.save(function (err, thisCube) {
+            if (err) return console.error(err);
+        });
     });
 
-
-    // let cube = new Cube({
-    //     name:data.name, 
-    //     description:data.description, 
-    //     imageUrl:data.imageUrl, 
-    //     difficulty:data.difficultyLevel,
-    //     accessories: []
-    // });
-    // cube.save()
-    // .then((response) => {
-    //     console.log(response);
-    //     res.redirect('/');
-    // });
+    Accessory.findOne({_id: selAccId})
+    .then((thisAcc) => {
+        thisAcc.cubes.push(cubeId);
+        thisAcc.save(function (err, thisAcc) {
+            if (err) return console.error(err);
+        });
+    });
 });
 
 module.exports = router;
