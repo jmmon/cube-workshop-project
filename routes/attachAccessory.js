@@ -8,20 +8,23 @@ router.get('/:uid', function(req, res, next) {
     console.log('get attachAccessory');
     // res.render('attachAccessory', { title: 'Attach Accessory Page'})
 
-
-    let id = req.params.uid;             
+    let id = req.params.uid;
     console.log(id);    //works
+
+    //get all accessories which are not attached to thisCube already
+
     Cube.findOne({_id: id}).populate('accessories')
     .then((thisCube) => {
         console.log(thisCube);
-        //get all accessories which are not attached to thisCube already
+        
+        //create array which has the ids of the attached accessories
+        let idArr = thisCube.accessories.map(a => {return a._id;}); 
 
-        let idArr = thisCube.accessories.map(a => {return a._id;});
-
-        console.log('idArr', idArr);
+        console.log('idArr', idArr);    //attached accessories arr
 
         Accessory.find()
         .then((foundAccessories) => {
+             //get all accessories, then filter out any which were already attached
             let dropdownAccessories = foundAccessories.filter(acc => !idArr.includes(acc._id));
 
             console.log('all accessories', foundAccessories);
@@ -29,7 +32,7 @@ router.get('/:uid', function(req, res, next) {
             console.log('accessories to add to dropdown', dropdownAccessories);
             res.render('attachAccessory', { title: 'Attach Accessory Page', cube: thisCube, dropdownAccessories: dropdownAccessories});
             
-        })
+        });
 
         
     });
@@ -43,22 +46,37 @@ router.post('/:uid', function(req, res, next) {
     let cubeId = req.params.uid;
     console.log('cube id', cubeId, '\nselected Accessory Id', selAccId);
 
-    Cube.findOne({_id: cubeId})
-    .then((thisCube) => {
-        thisCube.accessories.push(selAccId);
-        thisCube.save(function (err, thisCube) {
-            if (err) return console.error(err);
-        });
+
+    Cube.findOneAndUpdate(
+        {_id: cubeId}, 
+        { $push: {"accessories": selAccId}}, 
+        { upsert: true }, 
+        function(err) {if (err) console.log(err);
+    });
+    Accessory.findOneAndUpdate(
+        {_id: selAccId}, 
+        { $push: {"cubes": cubeId}}, 
+        { upsert: true }, 
+        function(err) {if (err) console.log(err);
     });
 
-    Accessory.findOne({_id: selAccId})
-    .then((thisAcc) => {
-        console.log(thisAcc);
-        thisAcc.cubes.push(cubeId);
-        thisAcc.save(function (err, thisAcc) {
-            if (err) return console.error(err);
-        });
-    });
+    // Cube.findOne({_id: cubeId})
+    // .then((thisCube) => {
+    //     thisCube.accessories.push(selAccId);
+    //     thisCube.save(function (err, thisCube) {
+    //         if (err) return console.error(err);
+    //     });
+    // });
+    
+    // Accessory.findOne({_id: selAccId})
+    // .then((thisAcc) => {
+    //     //console.log(thisAcc);
+    //     thisAcc.cubes.push(cubeId);
+    //     thisAcc.save(function (err, thisAcc) {
+    //         if (err) return console.error(err);
+    //     });
+    // });
+
     res.redirect(`/details/${cubeId}`);
 });
 

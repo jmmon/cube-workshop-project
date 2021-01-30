@@ -3,25 +3,24 @@
 <div class="details">
 <p><span>Description:</span> {{cube.description}}</p>
 <p><span>Difficulty level:</span> {{cube.difficulty}}</p>
-<a class="btn" href="/">Back</a>
-</div>
 <div align="center">
+    <a class="btn" href="/">Back</a>
     <a class="btn" href="/accessory/attach/{{cube._id}}">Attach Accessory</a>
 </div>
 
-<!--dummy data -->
+</div>
+
+
 <h2>Accessories</h2>
 <div class="accessories">
     
     {{#each accessories}}
         <div class="accessory">
-            <img src={{this.imageUrl}} alt={{this.name}}>
-            <h3>{{this.name}}</h3>
-            <p>{{this.description}}</p>
+            <img src={{imageUrl}} alt={{name}}>
+            <h3>{{name}}</h3>
+            <p>{{description}}</p>
         </div>
     {{else}}
         <h3 class="italic">This cube has no accessories yet...</h3>
     {{/each}}
 </div>
-
-{{!--  --}}
