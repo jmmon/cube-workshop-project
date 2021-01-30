@@ -17,7 +17,7 @@ router.get('/:uid', function(req, res, next) {
         //get all accessories which are not attached to thisCube already
 
         let idArr = thisCube.accessories.map(a => {return a._id;});
-        
+
         console.log('idArr', idArr);
 
         Accessory.find()
@@ -53,11 +53,13 @@ router.post('/:uid', function(req, res, next) {
 
     Accessory.findOne({_id: selAccId})
     .then((thisAcc) => {
+        console.log(thisAcc);
         thisAcc.cubes.push(cubeId);
         thisAcc.save(function (err, thisAcc) {
             if (err) return console.error(err);
         });
     });
+    res.redirect(`/details/${cubeId}`);
 });
 
 module.exports = router;

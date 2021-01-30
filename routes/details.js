@@ -7,9 +7,9 @@ router.get('/:uid', function(req, res, next) {
     let id = req.params.uid;
     console.log(id);    //works
 
-    Cube.findOne({_id: id})
-    .then((response) => {
-        res.render('details', { title: 'Cubicle', cube: response });
+    Cube.findOne({_id: id}).populate('accessories')
+    .then((thisCube) => {
+        res.render('details', { title: 'Cubicle', cube: thisCube, accessories: thisCube.accessories });
     });
     
 });
