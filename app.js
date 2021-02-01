@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const hbs = require('hbs');
 const mongoose = require('mongoose');
+
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
@@ -41,6 +42,9 @@ mongoose.connect(process.env.DB_URI,  {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 hbs.registerPartials("./views/partials");
+hbs.registerHelper('isEqual', function (expectedValue, value) {
+    return value === expectedValue;
+});
 
 app.use(logger('dev'));
 app.use(express.json());

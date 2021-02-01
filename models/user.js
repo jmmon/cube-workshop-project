@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 //id, username, password (hashed)
 
 const userScema = new Schema({
-    //_id: mongoose.Schema.Types.ObjectId,
     username: String,
     password: String
 });

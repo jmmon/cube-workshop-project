@@ -39,43 +39,25 @@ router.get('/:uid', function(req, res, next) {
 });
 
 router.post('/:uid', function(req, res, next) {
-    console.log('attach accessory post');
+    //console.log('attach accessory post');
     //console.log('~req.body', req.body);
     let selAccId = req.body.accessory;
-
     let cubeId = req.params.uid;
-    console.log('cube id', cubeId, '\nselected Accessory Id', selAccId);
+    //console.log('cube id', cubeId, '\nselected Accessory Id', selAccId);
 
 
     Cube.findOneAndUpdate(
         {_id: cubeId}, 
         { $push: {"accessories": selAccId}}, 
         { upsert: true }, 
-        function(err) {if (err) console.log(err);
-    });
+        function(err) {if (err) console.log(err);}
+    );
     Accessory.findOneAndUpdate(
         {_id: selAccId}, 
         { $push: {"cubes": cubeId}}, 
         { upsert: true }, 
         function(err) {if (err) console.log(err);
     });
-
-    // Cube.findOne({_id: cubeId})
-    // .then((thisCube) => {
-    //     thisCube.accessories.push(selAccId);
-    //     thisCube.save(function (err, thisCube) {
-    //         if (err) return console.error(err);
-    //     });
-    // });
-    
-    // Accessory.findOne({_id: selAccId})
-    // .then((thisAcc) => {
-    //     //console.log(thisAcc);
-    //     thisAcc.cubes.push(cubeId);
-    //     thisAcc.save(function (err, thisAcc) {
-    //         if (err) return console.error(err);
-    //     });
-    // });
 
     res.redirect(`/details/${cubeId}`);
 });
