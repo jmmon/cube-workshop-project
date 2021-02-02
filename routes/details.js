@@ -9,7 +9,7 @@ router.get('/:uid', function(req, res, next) {
 
     Cube.findOne({_id: id}).populate('accessories')
     .then((thisCube) => {
-        res.render('details', { title: 'Cubicle', cube: thisCube, accessories: thisCube.accessories, isCreator: true});
+        res.render('details', { title: 'Cubicle', cube: thisCube, accessories: thisCube.accessories, isCreator: true, user: req.user});
     });
     
 });

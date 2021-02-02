@@ -7,9 +7,11 @@
     {{#if isCreator}}
     <div align="center">
         <a class="btn" href="/">Back</a>
-        <a class="btn" href="/accessory/attach/{{cube._id}}">Attach Accessory</a>
-        <a class="btn" href="/edit/{{cube._id}}">Edit</a>
-        <a class="btn" href="/delete/{{cube._id}}">Delete</a>
+        {{#if user}}        <!--only logged in users see these links-->
+            <a class="btn" href="/accessory/attach/{{cube._id}}">Attach Accessory</a>
+            <a class="btn" href="/edit/{{cube._id}}">Edit</a>
+            <a class="btn" href="/delete/{{cube._id}}">Delete</a>
+        {{/if}}
     </div>
     {{else}}
     <div>

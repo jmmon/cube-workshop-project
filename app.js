@@ -14,6 +14,13 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
+
+var ensureAuthenticated = function(req, res, next) {
+    if (req.isAuthenticated()) return next();
+    else res.redirect('/login');
+};
+
+
 // require router scripts
 const indexRouter = require('./routes/index');
 const searchRouter = require('./routes/search');
@@ -55,7 +62,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
+//initialize passport, session
 app.use(require('express-session')({
     secret: process.env.EXP_SESSION_SECRET,
     resave: false,
@@ -67,12 +74,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-// use routers
+// unprotected routes
 app.use('/', indexRouter);  //index, login, register
-
 app.use('/search', searchRouter);
 app.use('/about', aboutRouter);
 app.use('/details', detailsRouter);
+
+// protected routes
+app.use(ensureAuthenticated);
 app.use('/create', createRouter);
 app.use('/accessory/create', createAccessoryRouter);
 app.use('/accessory/attach', attachAccessoryRouter);
@@ -104,3 +113,13 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+
+
+
+
+
+
+
+
+

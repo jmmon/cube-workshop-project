@@ -30,7 +30,7 @@ router.get('/:uid', function(req, res, next) {
             console.log('all accessories', foundAccessories);
 
             console.log('accessories to add to dropdown', dropdownAccessories);
-            res.render('attachAccessory', { title: 'Attach Accessory Page', cube: thisCube, dropdownAccessories: dropdownAccessories});
+            res.render('attachAccessory', { title: 'Attach Accessory Page', cube: thisCube, dropdownAccessories: dropdownAccessories, user: req.user});
             
         });
 

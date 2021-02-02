@@ -5,7 +5,7 @@ const Cube = require("../models/cube");
 
 /* GET create listing. */
 router.get('/', function(req, res, next) {
-    res.render('create', { title: 'Create Cube Page' });
+    res.render('create', { title: 'Create Cube Page', user: req.user });
 });
 
 router.post('/', function(req, res, next) {

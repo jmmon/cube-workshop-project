@@ -9,6 +9,9 @@
 
         <label for="repeatPassword">Re-Password</label>
         <input type="password" id="repeatPassword" name="repeatPassword" placeholder='Retype Password'>
+        {{#if error}}
+            <h4><ul><li>{{error}}</li></ul></h4>
+        {{/if}}
         <input type="submit" value="Register">
         <a class="btn" href="/">Cancel</a>
     </form>

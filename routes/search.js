@@ -3,7 +3,7 @@ var router = express.Router();
 const cubes = require('../config/database.json');
 const Cube = require('../models/cube');
 
-/* GET home page. */
+/* GET search results page. */
 router.get('/', function(req, res, next) {
     console.log('search get');
     let searchQuery = req.query;
@@ -37,17 +37,9 @@ router.get('/', function(req, res, next) {
         Cube.find({'name': new RegExp(text, "i"), 'difficulty': {$gte: min, $lte: max}}) //
         .then((cubes) => {
             console.log(cubes);
-            res.render('search', { title: 'Search Cubes', cube: cubes });
+            res.render('search', { title: 'Search Results', cube: cubes });
         })
         .catch((err) => console.log(err));
-
-        //render based off the three search parameters: string (blank or someText), min difficulty, max difficulty
-
-        // let filteredCubes = cubes.filter(cube => (cube.name.toLowerCase().includes(text) || cube.description.toLowerCase().includes(text) || cube.id.toLowerCase().includes(text)) && (cube.difficulty >= min && cube.difficulty <= max));
-        
-        // let empty = filteredCubes.length > 0 ? false: true;
-
-        // res.render('search', {title: "Search Cubes", cubes: filteredCubes, empty: empty});
     }
 });
 
