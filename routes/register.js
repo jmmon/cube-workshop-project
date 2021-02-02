@@ -36,12 +36,12 @@ router.post('/', function(req, res, next) {
                     });
                 });
             } else {
-                console.log('passwords do not match');
+                res.send('passwords do not match');
             }
 
         } else {
             console.log(user);
-            console.log('user', req.body.username ,'already exists');
+            res.send('user', req.body.username ,'already exists');
 
         }
         

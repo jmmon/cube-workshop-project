@@ -23,7 +23,7 @@ router.post('/', function(req, res, next) {
                 res.redirect('/');
                 //logged in successfully!
             } else {
-                console.log('Wrong password');
+                res.send('Wrong password');
             }
         })
         .catch((err) => console.log('bcrypt err', err));
@@ -31,7 +31,7 @@ router.post('/', function(req, res, next) {
     })
     .catch(function(err) {
         console.log(err);
-        console.log('Can\'t find user');
+        res.send('Can\'t find user');
     });
 });
 

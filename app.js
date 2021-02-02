@@ -23,6 +23,8 @@ const deleteRouter = require('./routes/delete');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 
+const cookieRouter = require('./routes/cookie');
+
 const app = express();
 
 // hide your mongo connection constiables
@@ -64,6 +66,8 @@ app.use('/edit', editRouter);
 app.use('/delete', deleteRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+
+app.use('/cookie', cookieRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
