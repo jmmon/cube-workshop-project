@@ -2,19 +2,18 @@ var express = require('express');
 var router = express.Router();
 const passport = require('passport');
 const Cube = require('../models/cube');
-const Account = require('../models/account');
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const User = require('../models/user');
 
 
 /* GET homepage / "browse" */
 router.get('/', function(req, res, next) {
     Cube.find()
     .then((response) => {
-        res.render('index', { title: 'Cubicle', cube: response, user: req.user });
+        res.render('index', { title: 'Cubicle', cube: response, loggedInUser: req.user });
     })
     .catch((err) => console.log(err));
 });
+
 
 
 
@@ -30,7 +29,7 @@ router.post('/register', function(req, res) {
     if (req.body.password === req.body.repeatPassword) {
         console.log('passwords match');
 
-        Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
+        User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
             if (err) {
                 return res.render('register', { error: err.message });
             }
@@ -56,7 +55,7 @@ router.post('/register', function(req, res) {
 
 /* GET login listing. */
 router.get('/login', function(req, res, next) {
-    res.render('login', { title: 'Login Page', user: req.user });
+    res.render('login', { title: 'Login Page', loggedInUser: req.user });
 });
 
 router.post('/login', passport.authenticate('local'), function(req, res) {

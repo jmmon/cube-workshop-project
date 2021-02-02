@@ -8,11 +8,8 @@ const mongoose = require('mongoose');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const Account = require('./models/account');
+const User = require('./models/user');
 
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const jwt = require('jsonwebtoken');
 
 
 var ensureAuthenticated = function(req, res, next) {
@@ -90,9 +87,9 @@ app.use('/delete', deleteRouter);
 app.use('/cookie', cookieRouter);
 
 // passport config
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 
 

@@ -9,14 +9,9 @@ router.get('/:uid', function(req, res, next) {
 
     Cube.findOne({_id: id}).populate('accessories')
     .then((thisCube) => {
-        res.render('details', { title: 'Cubicle', cube: thisCube, accessories: thisCube.accessories, isCreator: true, user: req.user});
+        res.render('details', { title: 'Cubicle', cube: thisCube, accessories: thisCube.accessories, isCreator: true, loggedInUser: req.user});
     });
     
 });
-
-// router.post('/:uid', function(req, res, next) {
-//     let id = req.params.uid;
-//     console.log(id);
-// });
 
 module.exports = router;

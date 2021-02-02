@@ -4,16 +4,16 @@ const passportLocalMongoose = require('passport-local-mongoose');
 
 //id, username, password (hashed)
 
-const accountSchema = new Schema({
+const userSchema = new Schema({
     username: String,
     password: String
 });
 
-accountSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose);
 
-const Account = mongoose.model("Account", accountSchema);
+const User = mongoose.model("User", userSchema);
 
-module.exports = Account;
+module.exports = User;
 
 
 // When user is created, generate JWT and use it late for authentication and authorization

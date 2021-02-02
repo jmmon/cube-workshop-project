@@ -9,12 +9,11 @@ router.get('/:uid', function(req, res, next) {
 
     Cube.findOne({_id: id})//.populate('accessories')
     .then((thisCube) => {
-        res.render('deleteCubePage', { title: 'Delete Cube Page', cube: thisCube, isCreator: true, user: req.user});
+        res.render('deleteCubePage', { title: 'Delete Cube Page', cube: thisCube, isCreator: true, loggedInUser: req.user});
     });
     
 });
 
-//delete post
 router.post('/:uid', function(req, res, next) {
     console.log('testing post');
     let cubeId = req.params.uid;
@@ -34,6 +33,6 @@ router.post('/:uid', function(req, res, next) {
     .catch(function(err) {console.log(err);});
 
     res.redirect('/');
-})
+});
 
 module.exports = router;

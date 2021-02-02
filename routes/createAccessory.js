@@ -5,7 +5,7 @@ const Accessory = require('../models/accessory');
 
 /* GET create listing. */
 router.get('/', function(req, res, next) {
-    res.render('createAccessory', { title: 'Create Accessory Page', user: req.user});
+    res.render('createAccessory', { title: 'Create Accessory Page', loggedInUser: req.user});
 });
 
 router.post('/', function(req, res, next) {     //works!

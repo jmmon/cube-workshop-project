@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const cubes = require('../config/database.json');
 const Cube = require('../models/cube');
 
 /* GET search results page. */
@@ -37,7 +36,7 @@ router.get('/', function(req, res, next) {
         Cube.find({'name': new RegExp(text, "i"), 'difficulty': {$gte: min, $lte: max}}) //
         .then((cubes) => {
             console.log(cubes);
-            res.render('search', { title: 'Search Results', cube: cubes });
+            res.render('search', { title: 'Search Results', cube: cubes, loggedInUser: req.user });
         })
         .catch((err) => console.log(err));
     }
