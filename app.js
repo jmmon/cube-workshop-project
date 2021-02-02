@@ -6,10 +6,15 @@ const logger = require('morgan');
 const hbs = require('hbs');
 const mongoose = require('mongoose');
 
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const Account = require('./models/account');
+
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
+// require router scripts
 const indexRouter = require('./routes/index');
 const searchRouter = require('./routes/search');
 const aboutRouter = require('./routes/about');
@@ -17,12 +22,8 @@ const createRouter = require('./routes/create');
 const detailsRouter = require('./routes/details');
 const createAccessoryRouter = require('./routes/createAccessory');
 const attachAccessoryRouter = require('./routes/attachAccessory');
-
 const editRouter = require('./routes/edit');
 const deleteRouter = require('./routes/delete');
-const loginRouter = require('./routes/login');
-const registerRouter = require('./routes/register');
-
 const cookieRouter = require('./routes/cookie');
 
 const app = express();
@@ -48,26 +49,43 @@ hbs.registerHelper('isEqual', function (expectedValue, value) {
     return value === expectedValue;
 });
 
+
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(require('express-session')({
+    secret: process.env.EXP_SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+
+
+// use routers
+app.use('/', indexRouter);  //index, login, register
+
 app.use('/search', searchRouter);
 app.use('/about', aboutRouter);
 app.use('/details', detailsRouter);
 app.use('/create', createRouter);
 app.use('/accessory/create', createAccessoryRouter);
 app.use('/accessory/attach', attachAccessoryRouter);
-
 app.use('/edit', editRouter);
 app.use('/delete', deleteRouter);
-app.use('/login', loginRouter);
-app.use('/register', registerRouter);
-
 app.use('/cookie', cookieRouter);
+
+// passport config
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Accessory = require('./accessory');
-const User = require('./user');
+const Account = require('./account');
 
 const cubeSchema = new Schema({
     name: String,
@@ -9,7 +9,7 @@ const cubeSchema = new Schema({
     imageUrl: String,
     difficulty: Number,
     accessories: [{ type: Schema.Types.ObjectId, ref: 'Accessory'}]
-    //creator: [{ type: Schema.Types.ObjectId, ref: 'User'}]
+    //creator: { type: Schema.Types.ObjectId, ref: 'Account'}
 });
 
 const Cube = mongoose.model("Cube", cubeSchema);

@@ -9,8 +9,13 @@
 </head>
 <body>
     <div class="container">
-        {{>header}}
-        
+
+        {{#if user}}
+            {{>headerAuth}}
+        {{else}}
+            {{>headerNoAuth}}
+        {{/if}}
+
         <main>{{{body}}}</main>
         
     </div>
