@@ -14,14 +14,15 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
     console.log(req.body);
 
-    User.findOne({username: req.body.username})
-    .then((user) => {
-        if (user === null) {
-            console.log('create user');
+    if (req.body.password === req.body.repeatPassword) {
+        console.log('passwords match');
 
-            if (req.body.password === req.body.repeatPassword) {
-                console.log('passwords match');
+        User.findOne({username: req.body.username})
+        .then((user) => {
+            if (user === null) {
+                console.log('create user');
 
+                
                 bcrypt.hash(req.body.password, saltRounds)
                 .then(function(hash) {
                     // Store hash in your password DB.
@@ -35,20 +36,22 @@ router.post('/', function(req, res, next) {
                         res.redirect('/login');
                     });
                 });
+                
+
             } else {
-                res.send('passwords do not match');
+                console.log(user);
+                res.send('user', req.body.username ,'already exists');
+
             }
+            
+        })
+        .catch(function(err) {
+            if (err) console.log(err);
+        });
 
-        } else {
-            console.log(user);
-            res.send('user', req.body.username ,'already exists');
-
-        }
-        
-    })
-    .catch(function(err) {
-        if (err) console.log(err);
-    });
+    } else {
+        res.send('passwords do not match');
+    }
 });
 
 module.exports = router;
