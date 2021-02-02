@@ -5,6 +5,7 @@ const Cube = require('../models/cube');
 /* GET index listing. */
 router.get('/set', function(req, res, next) {
     res.cookie("message", "new cookie");
+    //res.cookie('token', jwtToken);
     res.send("Cookie saved");
 
 });
