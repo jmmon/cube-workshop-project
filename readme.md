@@ -9,7 +9,7 @@ Installation:
  1. `npm install` to download dependencies
  2. Create a `.env` file with these contents, filling out your own mongodb information:  
 
-`DB_URI = mongodb+srv://cluster........net`    
+`DB_URI = mongodb+srv://clusterName........net`    
 `DB_NAME = <-name for your app database->`    
 `DB_USER = <-database username->`    
 `DB_PASS = <-database password->`    
