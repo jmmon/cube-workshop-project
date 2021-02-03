@@ -8,11 +8,12 @@ Installation:
 
  1. `npm install` to download dependencies
  2. Create a `.env` file with these contents, filling out your own mongodb information:
-   `DB_URI = mongodb+srv://cluster........net
-    DB_NAME = <-name for your app database->
-    DB_USER = <-database username->
-    DB_PASS = <-database password->
-    EXP_SESSION_SECRET = <-session secret key for passport to encrypt user's passwords - default: "keyboard cat"->`
+
+`DB_URI = mongodb+srv://cluster........net
+DB_NAME = <-name for your app database->
+DB_USER = <-database username->
+DB_PASS = <-database password->
+EXP_SESSION_SECRET = <-session secret key for passport to encrypt user's passwords - default: "keyboard cat"->`
 
  3. Be sure that `.env` file is in the same directory as `app.js` and is saved, then run `npm start` in the terminal
  4. Go to a browser and head to `localhost:3000` (this can be changed in the `.bin` file)
