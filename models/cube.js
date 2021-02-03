@@ -8,8 +8,8 @@ const cubeSchema = new Schema({
     description: String,
     imageUrl: String,
     difficulty: Number,
-    accessories: [{ type: Schema.Types.ObjectId, ref: 'Accessory'}]
-    //creator: { type: Schema.Types.ObjectId, ref: 'User'}
+    accessories: [{ type: Schema.Types.ObjectId, ref: 'Accessory'}],
+    creator: { type: Schema.Types.ObjectId, ref: 'User'}
 });
 
 const Cube = mongoose.model("Cube", cubeSchema);

@@ -39,7 +39,8 @@ mongoose.connect(process.env.DB_URI,  {
     user: process.env.DB_USER,
     pass: process.env.DB_PASS,
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
   })
     .then( (res) => console.log('db connected'))
     .catch((err) => console.log(err));

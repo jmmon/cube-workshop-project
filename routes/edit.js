@@ -25,6 +25,7 @@ router.post('/:uid', function(req, res, next) {
             "description": req.body.description,
             "imageUrl": req.body.imageUrl,
             "difficulty": req.body.difficultyLevel
+
         },
         (err) => console.log(err)
     );
