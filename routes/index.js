@@ -3,6 +3,8 @@ var router = express.Router();
 const passport = require('passport');
 const Cube = require('../models/cube');
 const User = require('../models/user');
+const Breakfast = require('../models/breakfast');
+const assert = require('assert');
 
 
 /* GET homepage / "browse" */
@@ -15,67 +17,48 @@ router.get('/', function(req, res, next) {
 });
 
 
-
-
-
-/* GET "/register */
-router.get('/register', function(req, res, next) {
-    console.log('register page');
-    res.render('register', { title: 'Register Page' });
-    
-});
-
-router.post('/register', function(req, res) {
-    if (req.body.password === req.body.repeatPassword) {
-        console.log('passwords match');
-
-        User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
-            if (err) {
-                return res.render('register', { error: err.message });
-            }
-
-            passport.authenticate('local')(req, res, function () {
-                req.session.save(function(err) {
-                    if (err) {
-                        return next(err);
-                    }
-                    res.redirect('/');
-                });
-            });
-        });
-
-    } else {
-        res.send('passwords do not match');
-    }
-});
-
-
-
-
-
-/* GET login listing. */
-router.get('/login', function(req, res, next) {
-    res.render('login', { title: 'Login Page', loggedInUser: req.user });
-});
-
-router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.redirect('/');
-});
-
-
-
-
-// LOGOUT
-router.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-});
-
-
-
 // Ping
-router.get('/ping', function(req, res) {
+router.get('/ping', async function(req, res) {
     res.status(200).send("pong!");
+    
+    // const badBreakfast = new Breakfast({
+    //     eggs: 2,
+    //     bacon: 0,
+    //     drink: 'Milk'
+    // });
+
+
+
+    
+    // let error = badBreakfast.validateSync();
+    // assert.equal(error.errors['eggs'].message, 'Too few eggs');
+    // assert.ok(!error.errors['bacon']);
+    // assert.equal(error.errors['drink'].message, '`Milk` is not a valid enum value for path `drink`.');
+    
+    // badBreakfast.bacon = 5;
+    // badBreakfast.drink = null;
+    
+    // error = badBreakfast.validateSync();
+    // assert.equal(error.errors['drink'].message, 'Path `drink` is required.');
+    
+    // badBreakfast.bacon = null;
+    // error = badBreakfast.validateSync();
+    // assert.equal(error.errors['bacon'].message, 'Why no bacon?');
+
+
+
+
+
+    // try {
+    //     const result = await badBreakfast.save();
+    //     console.log('this is the result', result);
+    // } catch (err) {
+    //     console.log('this is the error', err.message);
+
+    // }
+
+
+
 });
 
 

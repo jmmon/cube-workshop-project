@@ -16,8 +16,12 @@
         {{else}}
             {{>headerNoAuth}}
         {{/if}}
-
-        <main>{{{body}}}</main>
+        <div id="notifications">
+            <p id="notification-message"></p>
+        </div>
+        <main>
+            {{{body}}}
+            </main>
         
     </div>
     {{>footer}}
