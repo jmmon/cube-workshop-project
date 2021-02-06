@@ -10,39 +10,44 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.post('/register', function(req, res) {
+router.post('/', function(req, res) {
     console.log('register post');
-    console.log('name', req.body.username);
-    console.log('pass', req.body.password);
-    console.log('passRepeat', req.body.repeatPassword);
-    if (req.body.password === req.body.repeatPassword) {
-        console.log('passwords match');
 
-        let newUser = new User({ username : req.body.username, password: req.body.password });
-        let validationErrors = newUser.validateSync();
-        if (validationErrors === undefined) {
-            //register user
-            User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
-                if (err) {
-                    console.log(err);
-                    res.send('Error:\n', err);
-    
-                } else {
-                    //authenticate the session with the user
-                    passport.authenticate('local')(req, res, function () {
-                        req.session.save(function(err) {
-                            if (err) {
-                                return next(err);
-                            }
-                            res.redirect('/');
-                        });
+    let newUser = new User({ username : req.body.username, password: req.body.password });
+    let validationErrors = newUser.validateSync();
+
+    if (validationErrors === undefined && req.body.password === req.body.repeatPassword) {
+        //register user
+        User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
+            if (err) {
+                console.log('getting user register error');
+                console.log(err);
+                res.send('Error:\n', err);
+
+            } else {
+                //authenticate the session with the user
+                passport.authenticate('local')(req, res, function () {
+                    req.session.save(function(err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        res.redirect('/');
                     });
-                }
-            });
+                });
+            }
+        });
 
-        } else {
-            //display errors
+    } else {
+        //we have errors
 
+        //check for validation errors
+        //check for password match error
+        //then display all of them
+
+        let displayErrors = [];
+
+        if (validationErrors != undefined) {
+            //grab validation errors
             let values = Object.values(validationErrors.errors);
             console.log('~Validation Errors:');
             values.forEach(err => {
@@ -50,32 +55,18 @@ router.post('/register', function(req, res) {
                 console.log(err.properties.message);
                 console.log('');
             });
-
-            let displayErrors = values.map((err) => err.properties.path.charAt(0).toUpperCase() + err.properties.path.slice(1) + " " + err.properties.message);
-            res.render('register', {errors: displayErrors});
-
+            //add in validation errors
+            displayErrors = values.map((err) => err.properties.path.charAt(0).toUpperCase() + err.properties.path.slice(1) + " " + err.properties.message);
         }
 
-        // User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
-        //     if (err.name == 'ValidationError') {
-        //         console.log(err);
-        //         res.render('register', { error: err.message });
-
-        //     } else {
-        //         //authenticate the session with the user
-        //         passport.authenticate('local')(req, res, function () {
-        //             req.session.save(function(err) {
-        //                 if (err) {
-        //                     return next(err);
-        //                 }
-        //                 res.redirect('/');
-        //             });
-        //         });
-        //     }
-        // });
-
-    } else {
-        res.render('register', {errors: 'passwords do not match'});
+        if (req.body.password === req.body.repeatPassword) {
+            console.log('passwords match');
+        } else {
+            //add on password not matching error
+            displayErrors.push('Passwords do not match');
+        }
+        //render all the errors
+        res.render('register', {errors: displayErrors});
     }
 });
 
@@ -94,7 +85,6 @@ router.post('/register', function(req, res) {
 //         res.render('register', {error: 'Passwords do not match'});
 //     }
 
-    
 //     err = user.validateSync();
 
 //     if (err) {
@@ -127,9 +117,6 @@ router.post('/register', function(req, res) {
 //     //         });
 //     //     });
 //     // })
-
-
-    
 // });
 
 module.exports = router;

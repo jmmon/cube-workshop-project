@@ -83,7 +83,6 @@ app.use('/about', aboutRouter);
 app.use('/details', detailsRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
-app.use('/logout', logoutRouter);
 
 // protected routes
 app.use(ensureAuthenticated);
@@ -94,6 +93,7 @@ app.use('/accessory/attach', attachAccessoryRouter);
 app.use('/edit', editRouter);
 app.use('/delete', deleteRouter);
 app.use('/cookie', cookieRouter);
+app.use('/logout', logoutRouter);
 
 
 // passport config
