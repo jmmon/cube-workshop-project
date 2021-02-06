@@ -10,10 +10,10 @@ const cubeSchema = new Schema({
             validator: function(v) {
                 return /^[\w\d][\w\d\s]*[\w\d]$/.test(v);       //starts with any number or english letter; includes only numbers, letters, and spaces; and ends with any number or english letter
             },
-            message: props => `${props.value} must be only letters/numbers/spaces and not start or end with a space.`
+            message: `must be only letters/numbers/spaces and not start or end with a space!`
         },
-        minlength: 5,
-        required: true
+        minlength: [5, 'must be at least 5 characters!'],
+        required: [true, 'must have a name!']
     },
     description: {
         type: String,
@@ -21,10 +21,10 @@ const cubeSchema = new Schema({
             validator: function(v) {
                 return /^[\w\d][\w\d\s]*[\w\d]$/.test(v);       //starts with any number or english letter; includes only numbers, letters, and spaces; and ends with any number or english letter
             },
-            message: props => `${props.value} must be only letters/numbers/spaces and not start or end with a space.`
+            message: `must be only letters/numbers/spaces and not start or end with a space!`
         },
-        minlength: 20,
-        required: true
+        minlength: [20, 'must be at least 20 characters!'],
+        required: [true, 'must have a description!']
     },
     imageUrl: {
         type: String,
@@ -32,9 +32,9 @@ const cubeSchema = new Schema({
             validator: function(v) {
                 return /^https?:\/\/\X*/.test(v);       //starts with https://
             },
-            message: props => `${props.value} must start with http(s)://.`
+            message: `must start with "http(s)://"!`
         },
-        required: true
+        required: [true, 'must have an image path!']
     },
     difficulty: {
         type: Number,
