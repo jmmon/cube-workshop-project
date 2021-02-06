@@ -29,6 +29,9 @@ const attachAccessoryRouter = require('./routes/attachAccessory');
 const editRouter = require('./routes/edit');
 const deleteRouter = require('./routes/delete');
 const cookieRouter = require('./routes/cookie');
+const registerRouter = require('./routes/register');
+const loginRouter = require('./routes/login');
+const logoutRouter = require('./routes/logout');
 
 const app = express();
 
@@ -66,10 +69,11 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // unprotected routes
@@ -77,15 +81,20 @@ app.use('/', indexRouter);  //index, login, register
 app.use('/search', searchRouter);
 app.use('/about', aboutRouter);
 app.use('/details', detailsRouter);
+app.use('/register', registerRouter);
+app.use('/login', loginRouter);
 
 // protected routes
 app.use(ensureAuthenticated);
+
 app.use('/create', createRouter);
 app.use('/accessory/create', createAccessoryRouter);
 app.use('/accessory/attach', attachAccessoryRouter);
 app.use('/edit', editRouter);
 app.use('/delete', deleteRouter);
 app.use('/cookie', cookieRouter);
+app.use('/logout', logoutRouter);
+
 
 // passport config
 passport.use(new LocalStrategy(User.authenticate()));
