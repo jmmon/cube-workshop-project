@@ -11,24 +11,25 @@
 </head>
 <body>
     <!-- this is where the error goes -->
-        {{#if loggedInUser}}
+        {{#if user}}
             {{>headerAuth}}
         {{else}}
             {{>headerNoAuth}}
         {{/if}}
+
     <div class="container">
 
-
         {{#if errors}}
-        <div id="notifications">
+            <div id="notifications">
                 {{#each errors}}
                     <p id="notification-message">{{this}}</p>
                 {{/each}}
-        </div>
+            </div>
         {{/if}}
+
         <main>
             {{{body}}}
-            </main>
+        </main>
         
     </div>
     {{>footer}}

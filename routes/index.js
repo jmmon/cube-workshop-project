@@ -9,7 +9,7 @@ const User = require('../models/user');
 router.get('/', function(req, res, next) {
     Cube.find()
     .then((response) => {
-        res.render('index', { title: 'Cubicle', cube: response, loggedInUser: req.user });
+        res.render('index', { title: 'Cubicle', cube: response, user: req.user });
     })
     .catch((err) => console.log(err));
 });
@@ -18,6 +18,12 @@ router.get('/', function(req, res, next) {
 // Ping
 router.get('/ping', async function(req, res) {
     res.status(200).send("pong!");
+});
+
+
+router.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
 });
 
 
