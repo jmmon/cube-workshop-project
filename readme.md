@@ -3,6 +3,8 @@ Cube Workshop Project
 
 Register a user, login, and create cubes and accessories!
 
+Protected routes, login failure redirect with message, only able to edit/delete/attach-to cubes your user has created.
+
 Installation:
 ------------
 
