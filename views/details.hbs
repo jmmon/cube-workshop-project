@@ -6,9 +6,9 @@
 
     {{#if isCreator}} <!--only logged in users see these links-->
     <div align="center">
+        <a class="btn" href="/accessory/attach/{{cube._id}}">Attach</a>
+        <a class="btn" href="/edit/{{cube._id}}">Edit</a><br>
         <a class="btn" href="/">Back</a>
-        <a class="btn" href="/accessory/attach/{{cube._id}}">Attach</a><br>
-        <a class="btn" href="/edit/{{cube._id}}">Edit</a>
         <a class="btn" href="/delete/{{cube._id}}">Delete</a>
     </div>
     {{else}}
