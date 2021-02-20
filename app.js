@@ -28,7 +28,8 @@ const createAccessoryRouter = require('./routes/createAccessory');
 const attachAccessoryRouter = require('./routes/attachAccessory');
 const editRouter = require('./routes/edit');
 const deleteRouter = require('./routes/delete');
-const cookieRouter = require('./routes/cookie');
+const registerRouter = require('./routes/register');
+const loginRouter = require('./routes/login');
 
 const app = express();
 
@@ -50,9 +51,7 @@ mongoose.connect(process.env.DB_URI,  {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 hbs.registerPartials("./views/partials");
-hbs.registerHelper('isEqual', function (expectedValue, value) {
-    return value === expectedValue;
-});
+hbs.registerHelper('isEqual', (a, b) => {return a === b;});
 
 
 
@@ -66,10 +65,11 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // unprotected routes
@@ -77,15 +77,18 @@ app.use('/', indexRouter);  //index, login, register
 app.use('/search', searchRouter);
 app.use('/about', aboutRouter);
 app.use('/details', detailsRouter);
+app.use('/register', registerRouter);
+app.use('/login', loginRouter);
 
 // protected routes
 app.use(ensureAuthenticated);
+
 app.use('/create', createRouter);
 app.use('/accessory/create', createAccessoryRouter);
 app.use('/accessory/attach', attachAccessoryRouter);
 app.use('/edit', editRouter);
 app.use('/delete', deleteRouter);
-app.use('/cookie', cookieRouter);
+
 
 // passport config
 passport.use(new LocalStrategy(User.authenticate()));
@@ -111,13 +114,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
-
-
-
-
-
-
-
-
-

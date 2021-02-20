@@ -5,8 +5,29 @@ const passportLocalMongoose = require('passport-local-mongoose');
 //id, username, password (hashed)
 
 const userSchema = new Schema({
-    username: String,
-    password: String,
+    username: {
+        type: String,
+        unique: true,
+        validate: {
+            validator: function(v) {
+                return /^[\w\d]*$/.test(v);
+            },
+            message: `must be only letters or numbers!`
+        },
+        minlength: [5, 'must be 5 or more letters!'],
+        required: [true, 'is required!']
+    },
+    password: {
+        type: String,
+        validate: {
+            validator: function(v) {
+                return /^[\w\d]*$/.test(v);
+            },
+            message: `must be only letters or numbers!`
+        },
+        minlength: [8, 'must be 8 or more letters!']//,
+        //required: [true, 'is required!']
+    },
     cubes: [{ type: Schema.Types.ObjectId, ref: 'Cube'}]
 });
 

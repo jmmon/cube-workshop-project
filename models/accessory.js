@@ -4,9 +4,19 @@ const Cube = require('./cube');
 
 const accessorySchema = new Schema({
     //_id: mongoose.Schema.Types.ObjectId,
-    name: String,
-    imageUrl: String,
-    description: String,
+    name: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    imageUrl: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
     cubes: [{ type: Schema.Types.ObjectId, ref: 'Cube'}]
 });
 
