@@ -9,7 +9,7 @@ router.get('/:uid', function(req, res, next) {
 
     Cube.findOne({_id: id})//.populate('accessories')
     .then((thisCube) => {
-        res.render('deleteCubePage', { title: 'Delete Cube Page', cube: thisCube, isCreator: true, loggedInUser: req.user});
+        res.render('deleteCubePage', { title: 'Delete Cube Page', cube: thisCube, isCreator: true, user: req.user});
     });
     
 });
@@ -24,7 +24,7 @@ router.post('/:uid', function(req, res, next) {
         { $pull: {"cubes": cubeId}}, 
         function(err, accs) {
             if (err) console.log(err);
-            else console.log('Updated accessories:', accs);
+            console.log('Updated accessories:', accs);
         }
     );
 

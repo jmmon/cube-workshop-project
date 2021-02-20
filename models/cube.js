@@ -17,12 +17,12 @@ const cubeSchema = new Schema({
     },
     description: {
         type: String,
-        validate: {
-            validator: function(v) {
-                return /^[\w\d][\w\d\s]*[\w\d]$/.test(v);       //starts with any number or english letter; includes only numbers, letters, and spaces; and ends with any number or english letter
-            },
-            message: `must be only letters/numbers/spaces and not start or end with a space!`
-        },
+        // validate: {
+        //     validator: function(v) {
+        //         return /^[\w\d][\w\d\s]*[\w\d]$/.test(v);       //starts with any number or english letter; includes only numbers, letters, and spaces; and ends with any number or english letter
+        //     },
+        //     message: `must be only letters/numbers/spaces and not start or end with a space!`
+        // },
         minlength: [20, 'must be at least 20 characters!'],
         required: [true, 'must have a description!']
     },
