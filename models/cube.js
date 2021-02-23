@@ -13,7 +13,7 @@ const cubeSchema = new Schema({
             message: `must be only letters/numbers/spaces and not start or end with a space!`
         },
         minlength: [5, 'must be at least 5 characters!'],
-        required: [true, 'must have a name!']
+        required: [true, 'must have a value!']
     },
     description: {
         type: String,
@@ -24,7 +24,7 @@ const cubeSchema = new Schema({
         //     message: `must be only letters/numbers/spaces and not start or end with a space!`
         // },
         minlength: [20, 'must be at least 20 characters!'],
-        required: [true, 'must have a description!']
+        required: [true, 'must have a value!']
     },
     imageUrl: {
         type: String,
@@ -34,7 +34,7 @@ const cubeSchema = new Schema({
             },
             message: `must start with "http(s)://"!`
         },
-        required: [true, 'must have an image path!']
+        required: [true, 'must be an image path!']
     },
     difficulty: {
         type: Number,
