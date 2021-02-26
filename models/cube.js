@@ -6,6 +6,7 @@ const User = require('./user');
 const cubeSchema = new Schema({
     name: {
         type: String,
+        unique: true,
         validate: {
             validator: function(v) {
                 return /^[\w\d][\w\d\s]*[\w\d]$/.test(v);       //starts with any number or english letter; includes only numbers, letters, and spaces; and ends with any number or english letter

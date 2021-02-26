@@ -13,7 +13,11 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res) {
     console.log('register post');
 
-    let newUser = new User({ username : req.body.username, password: req.body.password });
+    let newUser = new User(
+        { 
+            username : req.body.username, 
+            password: req.body.password 
+        });
     let validationErrors = newUser.validateSync();
 
     if (validationErrors === undefined && req.body.password === req.body.repeatPassword) {
